@@ -1,3 +1,4 @@
+import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faCirclePlay,
@@ -6,8 +7,24 @@ import {
   faShuffle,
 } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
+import { useRef } from "react";
 
-const Player = ({ duration, prevSongId, nextSongId, randomIdFromArtist }) => {
+const Player = ({
+  duration,
+  prevSongId,
+  nextSongId,
+  randomIdFromArtist,
+  audio,
+}) => {
+  const audioPlayer = useRef();
+  const [isPlaying, setIsPlaying] = useState(false);
+
+  const playPause = () => {
+    isPlaying ? audioPlayer.current.pouse() : audioPlayer.current.play();
+
+    setIsPlaying(!isPlaying);
+  };
+
   return (
     <div className="player">
       <div className="player__controllers">
@@ -21,6 +38,7 @@ const Player = ({ duration, prevSongId, nextSongId, randomIdFromArtist }) => {
         <FontAwesomeIcon
           className="player__icon player__icon--play"
           icon={faCirclePlay}
+          onClick={() => playPause()}
         />
 
         {/* Botão Próxima */}
@@ -47,6 +65,7 @@ const Player = ({ duration, prevSongId, nextSongId, randomIdFromArtist }) => {
 
         <p>{duration}</p>
       </div>
+      <audio ref={audioPlayer} src={audio}></audio>
     </div>
   );
 };
