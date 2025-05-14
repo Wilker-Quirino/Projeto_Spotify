@@ -5,9 +5,21 @@ import {
   faBackwardStep,
   faForwardStep,
   faShuffle,
+  faCirclePause,
 } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
 import { useRef } from "react";
+
+const formatTime = (timeInSeconds) => {
+  const minutes = Math.floor(timeInSeconds / 60)
+    .toString()
+    .padStart(2, "0");
+  const seconds = Math.floor(timeInSeconds - minutes * 60)
+    .toString()
+    .padStart(2, "0");
+
+  return `${minutes} : ${seconds}`;
+};
 
 const Player = ({
   duration,
@@ -18,9 +30,10 @@ const Player = ({
 }) => {
   const audioPlayer = useRef();
   const [isPlaying, setIsPlaying] = useState(false);
+  const [currentTime, setCurrentTime] = useState(formatTime(0));
 
   const playPause = () => {
-    isPlaying ? audioPlayer.current.pouse() : audioPlayer.current.play();
+    isPlaying ? audioPlayer.current.pause() : audioPlayer.current.play();
 
     setIsPlaying(!isPlaying);
   };
@@ -37,7 +50,7 @@ const Player = ({
 
         <FontAwesomeIcon
           className="player__icon player__icon--play"
-          icon={faCirclePlay}
+          icon={isPlaying ? faCirclePause : faCirclePlay}
           onClick={() => playPause()}
         />
 
@@ -50,6 +63,13 @@ const Player = ({
       </div>
 
       <div className="player__progress">
+        <p className="player__time">{currentTime}</p>
+
+        <div className="player__bar">
+          <div className="player__bar-progress"></div>
+        </div>
+
+        <p className="player__time">{duration}</p>
         {/* Botão Aleatório */}
         <Link to={`/song/${randomIdFromArtist}`}>
           <FontAwesomeIcon
@@ -57,13 +77,6 @@ const Player = ({
             icon={faShuffle}
           />
         </Link>
-        <p>00:00</p>
-
-        <div className="player__bar">
-          <div className="player__bar-progress"></div>
-        </div>
-
-        <p>{duration}</p>
       </div>
       <audio ref={audioPlayer} src={audio}></audio>
     </div>

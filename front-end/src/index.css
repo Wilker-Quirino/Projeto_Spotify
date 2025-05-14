@@ -459,24 +459,25 @@ img {
 
 .player__progress {
   display: flex;
-  gap: 10px;
   align-items: center;
-  justify-content: space-between;
+  gap: 1rem;
   width: 100%;
   max-width: 600px;
 }
 
 .player__time {
-  width: 45px;
+  white-space: nowrap;
+  min-width: 45px;
   text-align: center;
 }
 
 .player__bar {
-  width: 100%;
+  flex: 1; /* Auto ajustável */
   height: 4px;
   background-color: #666;
   border-radius: var(--border-radius-s);
   overflow: hidden;
+  position: relative;
 }
 
 .player__bar-progress {
@@ -490,12 +491,6 @@ img {
 
 .player__icon--shuffle {
   font-size: 20px;
-}
-
-@media (max-width: 1280px) {
-  .player__time {
-    display: none;
-  }
 }
 
 @media (max-width: 800px) {
